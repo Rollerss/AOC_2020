@@ -1,17 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AOC
 {
     public static class Day02
     {
+        public static void AOCDay02()
+        {
+            var fileName = @".\InputData\AOCDay02.txt";
+            using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            using var streamReader = new StreamReader(stream);
+            var data = streamReader.ReadToEnd().Split('\n');
+            CycleThoughData(data);
+        }
+
+        public static void CycleThoughData(string[] data)
+        {
+            int part1Count = 0;
+            int part2Count = 0;
+
+            foreach (var item in data)
+            {
+                var parts = item.Split(" ");
+
+                var ints = parts[0].Split("-");
+
+                var min = int.Parse(ints[0]);
+                var max = int.Parse(ints[1]);
+                char letter = parts[1][0];
+                var pass = parts[2].ToCharArray();
+
+                part1Count += AOCDay02Part1(min, max, letter, pass);
+                part2Count += AOCDay02Part2(min, max, letter, pass);
+            }
+            Console.WriteLine($"Password that match part 1 {part1Count}");
+            Console.WriteLine($"Password that match part 2 {part2Count}");
+        }
+
+        public static int AOCDay02Part1(int min, int max, char letter, char[] pass)
+        {
+            var cnt = pass.Count(c => c == letter);
+
+            if (cnt >= min && max >= cnt)
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        public static int AOCDay02Part2(int min, int max, char letter, char[] pass)
+        {
+            if ((pass[min - 1] == letter && pass[max - 1] != letter) || (pass[min - 1] != letter && pass[max - 1] == letter))
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        //First run at AOC day 2 works but wanted to set up file stream for future nights.
         public static void DoSomething()
         {
             int totalCount = 0;
-            foreach (var item in strs)
+            foreach (var item in passwordData)
             {
                 var spilt = item.Split(":");
                 var min = int.Parse(spilt[0]);
@@ -33,7 +84,7 @@ namespace AOC
         public static void DoSomething2()
         {
             int totalCount = 0;
-            foreach (var item in strs)
+            foreach (var item in passwordData)
             {
                 var spilt = item.Split(":");
                 var min = int.Parse(spilt[0]);
@@ -50,7 +101,7 @@ namespace AOC
             Console.WriteLine(totalCount);
         }
 
-        public static string[] strs = new string[] {
+        public static string[] passwordData = new string[] {
 "1:9:x:xwjgxtmrzxzmkx",
 "4:6:r:rrrkrgr",
 "4:5:v:vvfvvvn",

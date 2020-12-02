@@ -9,8 +9,7 @@ namespace AOC
             Console.WriteLine("Hello World!");
             Day01.Find2020x2();
             Day01.Find2020x3();
-            Day02.DoSomething();
-            Day02.DoSomething2();
+            Day02.AOCDay02();
         }
     }
 }
