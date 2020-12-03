@@ -10,6 +10,7 @@ namespace AOC
             Day01.Find2020x2();
             Day01.Find2020x3();
             Day02.AOCDay02();
+            Day03.AOCDay03();
         }
     }
 }
