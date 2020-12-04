@@ -5,6 +5,28 @@ namespace AOC
 {
     public static class Day01
     {
+        public static void AOCDay01()
+        {
+            var numCount = nums.Count;
+            for (int i = 0; i < numCount; i++)
+            {
+                for (int j = i + 1; j < numCount; j++)
+                {
+                    if (nums[i] + nums[j] == 2020)
+                    {
+                        Console.WriteLine($"Day 1 Part 1: numbers {nums[i]}  {nums[j]} product {nums[i] * nums[j]}");
+                    }
+                    for (int k = j + 1; k < numCount; k++)
+                    {
+                        if (nums[i] + nums[j] + nums[k] == 2020)
+                        {
+                            Console.WriteLine($"Day 1 Part 2: numbers {nums[i]}  {nums[j]} {nums[k]} product {nums[i] * nums[j] * nums[k]}");
+                        }
+                    }
+                }
+            }
+        }
+
         public static void Find2020x2()
         {
             var numCount = nums.Count;

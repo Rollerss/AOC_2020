@@ -34,8 +34,8 @@ namespace AOC
                 part1Count += AOCDay02Part1(min, max, letter, pass);
                 part2Count += AOCDay02Part2(min, max, letter, pass);
             }
-            Console.WriteLine($"Password that match part 1 {part1Count}");
-            Console.WriteLine($"Password that match part 2 {part2Count}");
+            Console.WriteLine($"Day 2 Part 1: {part1Count}");
+            Console.WriteLine($"Day 2 Part 2: {part2Count}");
         }
 
         public static int AOCDay02Part1(int min, int max, char letter, char[] pass)
@@ -1103,7 +1103,5 @@ namespace AOC
 "1:2:d:ddxdnv",
 "4:8:d:dndfcnhd",
 };
-
-
     }
 }

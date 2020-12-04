@@ -46,7 +46,7 @@ namespace AOC
                     treeCount++;
                 }
             }
-            Console.WriteLine($"Trees {treeCount}");
+            //Console.WriteLine($"Trees {treeCount}");
             return treeCount;
         }
     }
