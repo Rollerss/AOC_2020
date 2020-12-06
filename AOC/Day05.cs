@@ -13,8 +13,7 @@ namespace AOC
             using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             using var streamReader = new StreamReader(stream);
 
-            //var data = streamReader.ReadToEnd().Replace('B', '1').Replace('F', '0').Replace('L', '0').Replace('R', '1').Split('\n');
-            var data = streamReader.ReadToEnd().Replace('F', '0').Replace('L', '0').Split('\n');
+            var data = streamReader.ReadToEnd().Split('\n');
             AOCDay05Part1(data);
             
         }
@@ -54,7 +53,7 @@ namespace AOC
             var rows = (x: 0, y: max);
             foreach (var item in data)
             {
-                if (item == '0')
+                if (item == 'F' || item == 'L')
                 {
                     rows.y = (rows.x + rows.y) / 2;
                 }
@@ -66,14 +65,5 @@ namespace AOC
             }
             return rows.x;
         }
-
-        //Start by considering the whole range, rows 0 through 127.
-        //F means to take the lower half, keeping rows 0 through 63.
-        //B means to take the upper half, keeping rows 32 through 63.
-        //F means to take the lower half, keeping rows 32 through 47.
-        //B means to take the upper half, keeping rows 40 through 47.
-        //B keeps rows 44 through 47.
-        //F keeps rows 44 through 45.
-        //The final F keeps the lower of the two, row 44.
     }
 }

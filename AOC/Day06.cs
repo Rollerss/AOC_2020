@@ -23,37 +23,25 @@ namespace AOC
         public static void AOCDay06Part1(string[] data)
         {
 
-            var c = 0;
+            var count = 0;
             foreach (var p in data)
             {
                 var cs = p.Replace(Environment.NewLine, "").ToCharArray();
-                c += cs.Distinct<char>().Count();
+                count += cs.Distinct<char>().Count();
             }
-            Console.WriteLine($"Day 6 Part 1: {c}");
+            Console.WriteLine($"Day 6 Part 1: {count}");
         }
 
         public static void AOCDay06Part2(string[] data)
         {
-            var c = 0;
+            var count = 0;
             foreach (var item in data)
             {
-                var s = item.Split(Environment.NewLine);
-                var ct = s.Length;
-                if (ct == 1)
-                {
-                    //Console.WriteLine(item.Count());
-                    c += item.Count();
-                }
-                else
-                {
-                    var duplicates = item.GroupBy(p => p).Where(g => g.Count() >= ct).Select(g => g.Key);
-                    //Console.WriteLine(duplicates.Count());
-                    c += duplicates.Count();
-                }
-
+                var cnt = item.Split(Environment.NewLine).Length;
+                var duplicates = item.GroupBy(p => p).Where(g => g.Count() >= cnt).Select(g => g.Key);
+                count += duplicates.Count();
             }
-            Console.WriteLine($"Day 6 Part 2: {c}");
+            Console.WriteLine($"Day 6 Part 2: {count}");
         }
-
     }
 }

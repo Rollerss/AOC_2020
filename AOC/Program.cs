@@ -8,11 +8,17 @@ namespace AOC
         {
             Console.WriteLine("Hello World!");
             Day01.AOCDay01();
+            Console.WriteLine();
             Day02.AOCDay02();
+            Console.WriteLine();
             Day03.AOCDay03();
+            Console.WriteLine();
             Day04.AOCDay04();
+            Console.WriteLine();
             Day05.AOCDay05();
+            Console.WriteLine();
             Day06.AOCDay06();
+            Console.WriteLine();
 
 
             Console.WriteLine("More days to come, keep going!!!");
