@@ -12,67 +12,87 @@ namespace AOC
             var fileName = @".\InputData\AOCDay07.txt";
             //var fileName = @".\InputData\AOCDay07test.txt";
             //var fileName = @".\InputData\AOCDay07test2.txt";
+
             using var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             using var streamReader = new StreamReader(stream);
 
             var data = streamReader.ReadToEnd().Split('\n');
-            //var data = streamReader.ReadToEnd().Split(new string[] { Environment.NewLine + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             AOCDay07Part1(data);
             AOCDay07Part2(data);
         }
 
-        public static Dictionary<string, string[]> founds = new Dictionary<string, string[]>();
-
         public static void AOCDay07Part1(string[] data)
         {
+            var dataDict = CreateDictPart1(data);
+            
             var find = "shiny gold bag";
-            var dataL = new Dictionary<string, string[]>();
-            foreach (var item in data)
-            {
-                var dataS = item.Split("s contain ");
-                dataL.Add(dataS[0], dataS[1].Split(", "));
-            }
-            //Console.WriteLine($"Day 7 Part 1a: {dataL.Keys.Count}");
-            CycleThoughData(dataL, find);
+
+            var foundBagsDict = new Dictionary<string, string[]>();
+            FindBags(dataDict, find, foundBagsDict);
+            
             var count = -1;
-            while (count != founds.Keys.Count)
+            while (count != foundBagsDict.Keys.Count)
             {
-                count = founds.Keys.Count;
-                //Console.WriteLine(count);
-                var local = founds.ToDictionary(entry => entry.Key,entry => entry.Value);
-                foreach (var item in local)
+                count = foundBagsDict.Keys.Count;
+                var localDictCopy = foundBagsDict.ToDictionary(entry => entry.Key,entry => entry.Value);
+                foreach (var item in localDictCopy)
                 {
-                    //Console.WriteLine(item.Key);
-                    CycleThoughData(dataL, item.Key);
+                    FindBags(dataDict, item.Key, foundBagsDict);
                 }
             }
 
-            Console.WriteLine($"Day 7 Part 1: {founds.Keys.Count}");
-            //AOCDay07Part2(dataL);
+            Console.WriteLine($"Day 7 Part 1: {foundBagsDict.Keys.Count}");
         }
 
-        public static void CycleThoughData(Dictionary<string, string[]> data, string find)
+        public static void FindBags(Dictionary<string, string[]> dataDict, string find, 
+                                           Dictionary<string, string[]> foundDict)
         {
             var data2 = new List<string[]>();
-            foreach (var item in data)
+            foreach (var item in dataDict)
             {
                 foreach (var items in item.Value)
                 {
                     if (items.Contains(find))
                     {
-                        founds.TryAdd(item.Key, item.Value);
+                        foundDict.TryAdd(item.Key, item.Value);
                     }
                 }
             }
         }
 
+        public static Dictionary<string, string[]> CreateDictPart1(string[] data)
+        {
+            var dataDict = new Dictionary<string, string[]>();
+            foreach (var item in data)
+            {
+                var dataS = item.Split("s contain ");
+                dataDict.Add(dataS[0], dataS[1].Split(", "));
+            }
+            return dataDict;
+        }
+
+
         public static void AOCDay07Part2(string[] data)
         {
             var dataDict = CreateDataDict(data);
             var find = "shinygold";
-            var x = findBagCount(find, dataDict);
+            var bagsInBag = findBagCount(find, dataDict);
 
-            Console.WriteLine($"Day 5 Part 2: {x - 1}");
+            Console.WriteLine($"Day 5 Part 2: {bagsInBag - 1}");
+        }
+
+        public static int findBagCount(string find, Dictionary<string, List<Tuple<int, string>>> dataDict)
+        {
+            var values = dataDict[find];
+            var totalBags = 1;
+            foreach (var item in values)
+            {
+                if(item.Item2 != "noBag")
+                {
+                    totalBags += item.Item1 * findBagCount(item.Item2, dataDict);
+                }
+            }
+            return totalBags;
         }
 
         public static Dictionary<string, List<Tuple<int, string>>> CreateDataDict(string[] data)
@@ -80,10 +100,10 @@ namespace AOC
             var dataDict = new Dictionary<string,List<Tuple<int,string>>>();
             foreach (var item in data)
             {
-                var dataSplit1 = item.Split("s contain ");
-                var dataSplit2 = dataSplit1[0].Split(" ");
-                var key = dataSplit2[0] + dataSplit2[1];
-                var values = parseValues(dataSplit1[1]);
+                var dataSplit = item.Split("s contain ");
+                var dataSplit0 = dataSplit[0].Split(" ");
+                var key = dataSplit0[0] + dataSplit0[1];
+                var values = parseValues(dataSplit[1]);
                 dataDict.Add(key, values);
             }
             return dataDict;
@@ -109,20 +129,6 @@ namespace AOC
                 }
             }
             return items;
-        }
-
-        public static int findBagCount(string find, Dictionary<string, List<Tuple<int, string>>> dataDict)
-        {
-            var values = dataDict[find];
-            var totalBags = 1;
-            foreach (var item in values)
-            {
-                if(item.Item2 != "noBag")
-                {
-                    totalBags += item.Item1 * findBagCount(item.Item2, dataDict);
-                }
-            }
-            return totalBags;
         }
     }
 }
