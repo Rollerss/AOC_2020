@@ -47,7 +47,6 @@ namespace AOC
         public static void FindBags(Dictionary<string, string[]> dataDict, string find, 
                                            Dictionary<string, string[]> foundDict)
         {
-            var data2 = new List<string[]>();
             foreach (var item in dataDict)
             {
                 foreach (var items in item.Value)
