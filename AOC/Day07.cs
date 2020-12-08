@@ -77,7 +77,7 @@ namespace AOC
             var find = "shinygold";
             var bagsInBag = findBagCount(find, dataDict);
 
-            Console.WriteLine($"Day 5 Part 2: {bagsInBag - 1}");
+            Console.WriteLine($"Day 7 Part 2: {bagsInBag - 1}");
         }
 
         public static int findBagCount(string find, Dictionary<string, List<Tuple<int, string>>> dataDict)
