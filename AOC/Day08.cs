@@ -30,60 +30,42 @@ namespace AOC
             AOCDay08Part2(dataList);
         }
 
-
         public static void AOCDay08Part1(List<Tuple<string, int>> dataList)
-        { 
-            Console.WriteLine($"Day 8 Part 1: {CycleThoughData(dataList, true)}");
+        {
+            Console.WriteLine($"Day 8 Part 1: {CycleThoughData(dataList).Item2}");
         }
 
         public static void AOCDay08Part2(List<Tuple<string, int>> dataList)
         {
-            for (int i = 0; i < dataList.Count; i++)
+            var len = dataList.Count;
+            for (int i = 0; i < len; i++)
             {
-                try
+                var inst = dataList[i].Item1;
+                if (inst != "acc")
                 {
-                    var inst = dataList[i].Item1;
-                    var answer = 0;
                     List<Tuple<string, int>> list2 = new(dataList);
-                    if (inst != "acc")
+                    list2[i] = new Tuple<string, int>(inst == "jmp" ? "nop" : "jmp", list2[i].Item2);
+                    var answer = CycleThoughData(list2);
+
+                    if (answer.Item1 == len)
                     {
-                        list2[i] = new Tuple<string, int>(inst == "jmp" ? "nop" : "jmp", list2[i].Item2);
-                        answer = CycleThoughData(list2, false);
-                    }
-                    
-                    if (answer != 0)
-                    {
-                        Console.WriteLine($"Day 8 Part 2: {answer}");
+                        Console.WriteLine($"Day 8 Part 2: {answer.Item2}");
                         break;
                     }
                 }
-                catch { }
             }
         }
 
-        public static int CycleThoughData(List<Tuple<string, int>> dataList, bool part1)
+        public static Tuple<int,int> CycleThoughData(List<Tuple<string, int>> dataList)
         {
             var acc = 0;
             var pointer = 0;
             List<int> visted = new();
-            var count = 0;
-            while (pointer < dataList.Count)
+            while (!visted.Contains(pointer) && pointer < dataList.Count)
             {
-                count++;
-                if (part1)
-                {
-                    if(visted.Contains(pointer))
-                    {
-                        return acc;
-                    }
-                    visted.Add(pointer);
-                }
-                else if (count == 400)
-                {
-                    return 0;
-                }
-
+                visted.Add(pointer);
                 var inst = dataList[pointer].Item1;
+
                 if (inst == "acc")
                 {
                     acc += dataList[pointer].Item2;
@@ -98,7 +80,7 @@ namespace AOC
                     pointer += dataList[pointer].Item2;
                 }
             }
-            return acc;
+            return new Tuple<int, int>(pointer, acc);
         }
     }
 }
