@@ -23,6 +23,8 @@ namespace AOC
             Console.WriteLine();
             Day08.AOCDay08();
             Console.WriteLine();
+            Day09.AOCDay09();
+            Console.WriteLine();
 
             Console.WriteLine("More days to come, keep going!!!");
         }
