@@ -32,8 +32,8 @@ namespace AOC
             int[] ints = Array.ConvertAll(items[1].Split(','), s => int.Parse(s));
             //int[] ints = ins.Where(x => x != 0).ToArray();
             int it1 = int.Parse(items[0]);
-            //AOCDay13Part1(it1, ints);
-            AOCDay13Part2(ints);
+            AOCDay13Part1(it1, ints);
+            //AOCDay13Part2(ints);
         }
 
         public static void AOCDay13Part1(int d, int[] ints)
