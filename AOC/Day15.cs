@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AOC
@@ -9,13 +8,9 @@ namespace AOC
     {
         public static void AOCDay15()
         {
-            //var fileName = @".\InputData\AOCDay15test.txt";
-            ////fileName = @".\InputData\AOCDay15.txt";
-            //using var streamReader = new StreamReader(new FileStream(fileName, FileMode.Open, FileAccess.Read));
-            //ParseThatData(streamReader.ReadToEnd());
             List<int> data = new() { 999999999, 0, 8, 15, 2, 12, 1, 4 };
             var stop = 30000000;
-            AOCDay15ParTuple(data, stop ,DateTime.Now);
+            AOCDay15ParTuple(data, stop, DateTime.Now);
             Console.WriteLine();
             AOCDay15Part2(data, stop, DateTime.Now);
             Console.WriteLine();
@@ -26,8 +21,7 @@ namespace AOC
             Console.WriteLine();
             AOCDay15Part2(data, stop, DateTime.Now);
         }
-        
-        
+
         public static void AOCDay15Part1(List<int> dataA, int stop, DateTime start)
         {
             List<int> data = new();
@@ -57,7 +51,6 @@ namespace AOC
             Console.WriteLine($"Day 14 Part Tuple: {data[2020]}");
         }
 
-       
         public static void AOCDay15Part2(List<int> data, int stop, DateTime start)
         {
             Dictionary<int, List<int>> dict = new();
@@ -88,19 +81,12 @@ namespace AOC
                     Console.WriteLine(DateTime.Now - start);
                     Console.WriteLine($"Day 14 Part 2: {x}");
                 }
-
             }
         }
 
-
-
-
-
-
-
-        public static void AOCDay15ParTuple(List<int> data,int stop, DateTime start)
+        public static void AOCDay15ParTuple(List<int> data, int stop, DateTime start)
         {
-            Dictionary<int, (int,int)> dict = new();
+            Dictionary<int, (int, int)> dict = new();
             var cnt = data.Count;
             var x = -1;
             for (int i = 1; i <= stop; i++)

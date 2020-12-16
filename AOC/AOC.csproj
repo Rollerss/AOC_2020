@@ -12,10 +12,13 @@
     <None Update="InputData\AOCDay12.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="InputData\AOCDay15test1.txt">
+    <None Update="InputData\AOCDay16test2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="InputData\AOCDay15.txt">
+    <None Update="InputData\AOCDay16test1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="InputData\AOCDay16.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="InputData\AOCDay14.txt">
