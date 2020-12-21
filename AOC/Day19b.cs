@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace AOC
 {
-    public static class Day19b
+    public static class Day19
     {
         public static void AOCDay19()
         {
@@ -40,21 +40,23 @@ namespace AOC
                 var ruleSplit = rule.Split(": ");
                 list.Add((ruleSplit[0], ruleSplit[1]));
             }
+
             Dictionary<string, string> regDict = new();
             for (int i = 0; i < list.Count; i++)
             {
                 RuleMaker(list[i].Item2, list[i].Item1, list, regDict);
             }
+
             var zeroVal = list.Where(x => x.Item1 == "0").FirstOrDefault().Item2;
             var zero = regDict[zeroVal];
             var zeroMatch = $"^{zero}$";
             var count = 0;
+
             foreach (var item in input)
             {
                 if (Regex.IsMatch(item, zeroMatch))
                 {
                     count++;
-
                 }
             }
 
@@ -65,11 +67,11 @@ namespace AOC
 
             foreach (var item in input)
             {
-                var match42 = Regex.Match(item, $"^({reg42}" + "){2,}");
+                var match42 = Regex.Match(item, $"^{reg42}" + "{2,}");
                 if (match42.Length > 0)
                 {
                     var ix = item.Substring(match42.Length);
-                    var match31 = Regex.Match(item, "(" + reg31 + ")+$");
+                    var match31 = Regex.Match(item, reg31 + "+$");
                     if (ix.Length == match31.Length && match42.Length > match31.Length && match31.Length > 0)
                     {
                         count2++;
