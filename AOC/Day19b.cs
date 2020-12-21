@@ -46,8 +46,6 @@ namespace AOC
                 RuleMaker(list[i].Item2, list[i].Item1, list, regDict);
             }
             var zeroVal = list.Where(x => x.Item1 == "0").FirstOrDefault().Item2;
-            //regDict.TryAdd(zero.Item1, RuleMaker(zero.Item2, zero.Item1, list, regDict));
-            //RuleMaker(zero.Item2, zero.Item1, list, regDict);
             var zero = regDict[zeroVal];
             var zeroMatch = $"^{zero}$";
             var count = 0;
@@ -56,77 +54,32 @@ namespace AOC
                 if (Regex.IsMatch(item, zeroMatch))
                 {
                     count++;
-                    //Console.WriteLine(item);
+
                 }
             }
-            var count2 = 0;
-            var count3 = 0;
-            var count4 = 0;
-            var count5 = 0;
-            var count6 = 0;
+
             var reg42 = regDict["42"];
-            //Console.WriteLine(reg42);
             var val31 = list.Where(x => x.Item1 == "31").FirstOrDefault().Item2;
             var reg31 = regDict[val31];
-            //RuleMaker(list[i].Item2, list[i].Item1, list, regDict);
+            var count2 = 0;
+
             foreach (var item in input)
             {
-                if (Regex.IsMatch(item, $"^{reg42}" + "{2,}" + reg31 + "+$"))
+                var match42 = Regex.Match(item, $"^({reg42}" + "){2,}");
+                if (match42.Length > 0)
                 {
-                    count2++;
-
-                    var match42 = Regex.Match(item, $"^{reg42}" + "{2,6}");
                     var ix = item.Substring(match42.Length);
-                    var match31 = Regex.Match(item, reg31 + "+?$");
-                    //if (Regex.IsMatch(item, reg31 + "${1,}"))
-                    if (ix.Length == match31.Length)
-                        count6++;
-                    ////Console.WriteLine(item);
-                    //var match42 = Regex.Match(item, $"^{reg42}" + "{1,}");
-                    ////Console.WriteLine(match42);
-                    //var match31 = Regex.Match(item, reg31 + "${1,}");
-                    ////Console.WriteLine(match31);
-                    //if (item.Length == match42.Length + match31.Length)
-                    //    count3++;
+                    var match31 = Regex.Match(item, "(" + reg31 + ")+$");
+                    if (ix.Length == match31.Length && match42.Length > match31.Length && match31.Length > 0)
+                    {
+                        count2++;
+                    }
                 }
-                //List<string> subdata = new();
-                //if (Regex.IsMatch(item, $"^{reg42}" + "{1,}") && Regex.IsMatch(item, reg31 + "${1,}"))
-                //{
-                //    count4++;
-                //    var match42 = Regex.Match(item, $"^{reg42}" + "{2,}");
-                //    //Console.WriteLine(match42);
-                //    var match31 = Regex.Match(item, reg31 + "${1,}");
-                //    //Console.WriteLine(match31);
-                //    if (item.Length == match42.Length + match31.Length)
-                //        count5++;
-                //    //Console.WriteLine(item);
-                //    var match42b = Regex.Match(item, $"^{reg42}" + "{3,}");
-                //    //Console.WriteLine(match42);
-                //    var match31b = Regex.Match(item, reg31 + "${2,}");
-                //    //Console.WriteLine(match31);
-                //    //if (item.Length == match42b.Length + match31b.Length)
-                //}
-
-                //if (Regex.IsMatch(item, $"^{reg42}" + "{2,}"))// + reg31 + "${1,}"))
-                //{
-
-
-
-                //count2++;
-                //Console.WriteLine(item);
-                //Console.WriteLine(match42);
-                //Console.WriteLine(match31);
-                //count3++;
-                //}
             }
 
-            //Console.WriteLine("count 1: " + count);
-            Console.WriteLine("count 2: " + count2);
-            Console.WriteLine("count 3: " + count3);
-            Console.WriteLine("count 4: " + count4);
-            Console.WriteLine("count 5: " + count5);
-            Console.WriteLine("count 6: " + count6);
-            //Console.WriteLine($"Day 19 Part 1: {cnt1} {cnt3} {cnt1 * cnt3}");
+            Console.WriteLine("Day 19 Part 1: " + count);
+            //Console.WriteLine("The correct answer for part 2 is 332 that is 332 and only 3 3 2");
+            Console.WriteLine("Day 19 Part 2: " + count2);
             Console.WriteLine();
         }
         public static string RuleMaker(string val, string key, List<(string, string)> list, Dictionary<string, string> regDict)
@@ -166,8 +119,6 @@ namespace AOC
                         var itm = list.Where(x => x.Item1 == item).FirstOrDefault();
                         newVal += RuleMaker(itm.Item2, itm.Item1, list, regDict);
                     }
-                    //regDict.TryAdd(key, newVal);
-                    //return newVal;
                 }
             }
             regDict.TryAdd(val, newVal);
