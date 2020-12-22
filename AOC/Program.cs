@@ -47,8 +47,11 @@ namespace AOC
             //Console.WriteLine();
             //Day20.AOCDay20();
             //Console.WriteLine();
-            Day21.AOCDay21();
+            //Day21.AOCDay21();
+            //Console.WriteLine();
+            Day22.AOCDay22();
             Console.WriteLine();
+
 
             Console.WriteLine("More days to come, keep going!!!");
         }
