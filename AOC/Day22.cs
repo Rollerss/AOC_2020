@@ -17,7 +17,7 @@ namespace AOC
             //}
             var fileName = @".\InputData\AOCDay22test1.txt";
             //var fileName = @".\InputData\AOCDay22test2.txt";
-            //fileName = @".\InputData\AOCDay22.txt";
+            fileName = @".\InputData\AOCDay22.txt";
             using var streamReader = new StreamReader(new FileStream(fileName, FileMode.Open, FileAccess.Read));
             ParseThatData(streamReader.ReadToEnd());
         }
@@ -25,51 +25,40 @@ namespace AOC
         public static void ParseThatData(string data)
         {
             var sd = data.Split(Environment.NewLine + Environment.NewLine);
-            List<(string, List<int>)> decksList = new();
-            Create(sd[0], decksList);
-            Create(sd[1], decksList);
-            //AOCDay22Part1(decksList);
-            AOCDay22Part2(decksList);
+            var deck1 = Create(sd[0]);
+            var deck2 = Create(sd[1]);
+            AOCDay22Part1(new List<int>(deck1), new List<int>(deck2));
+            AOCDay22Part2(deck1, deck2);
         }
 
-        public static void Create(string data, List<(string, List<int>)> decksList)
+        public static List<int> Create(string data)
         {
             var sd = data.Split(Environment.NewLine);
-
-            int[] ints = Array.ConvertAll(sd[1..], s => int.Parse(s));
-            decksList.Add((sd[0], ints.ToList()));
+            return Array.ConvertAll(sd[1..], s => int.Parse(s)).ToList();
         }
 
-        public static void AOCDay22Part1(List<(string, List<int>)> decksList)
+        public static void AOCDay22Part1(List<int> p1deck, List<int> p2deck)
         {
-            var p1deck = decksList[0];
-            var p2deck = decksList[1];
-
-            while(p1deck.Item2.Count > 0 && p2deck.Item2.Count > 0)
-            {
-                var p1Card = p1deck.Item2[0];
-                var p2Card = p2deck.Item2[0];
-                if (p1Card > p2Card)
-                {
-                    p1deck.Item2.Add(p1Card);
-                    p1deck.Item2.Add(p2Card);
-                }
-                else
-                {
-                    p2deck.Item2.Add(p2Card);
-                    p2deck.Item2.Add(p1Card);
-                }
-                    p1deck.Item2.RemoveAt(0);
-                    p2deck.Item2.RemoveAt(0);
-            }
-            var score = 0;
-            if (p1deck.Item2.Count > 0)
-               score = CalcScore(p1deck.Item2);
+            PlayGame(p1deck, p2deck, false);
+            int score;
+            if (p1deck.Count > 0)
+                score = CalcScore(p1deck);
             else
-               score = CalcScore(p2deck.Item2);
-
+                score = CalcScore(p2deck);
 
             Console.WriteLine($"Day 22 Part 1: {score}");
+        }
+
+        public static void AOCDay22Part2(List<int> p1deck, List<int> p2deck)
+        {
+            var winner = PlayGame(p1deck, p2deck, true);
+            int score;
+            if (winner == "p1")
+                score = CalcScore(p1deck);
+            else
+                score = CalcScore(p2deck);
+
+            Console.WriteLine($"Day 22 Part 2: {score}");
         }
 
         public static int CalcScore(List<int> deck)
@@ -83,89 +72,51 @@ namespace AOC
             return score;
         }
 
-        public static void AOCDay22Part2(List<(string, List<int>)> decksList)
+        public static string PlayGame(List<int> p1Deck, List<int> p2Deck, bool part2)
         {
-            var p1deck = decksList[0];
-            var p2deck = decksList[1];
-
-            HashSet<(string, string)> hashRounds = new();
-
-            var winner = CheckForMatch(hashRounds, p1deck, p2deck);
-            
-            var score = 0;
-            score = CalcScore(winner.Item2);
-            //if (winner.Item1 == "")
-            //    score = CalcScore(p1deck.Item2);
-            //else
-
-            Console.WriteLine($"Day 22 Part 2: {score}");
-        }
-
-        public static (string, List<int>) CheckForMatch(HashSet<(string, string)> hashRounds, (string, List<int>) p1deck, (string, List<int>) p2deck)
-        {
-            while (p1deck.Item2.Count > 0 && p2deck.Item2.Count > 0)
+            HashSet<(string, string)> seenGames = new();
+            while (p1Deck.Count > 0 && p2Deck.Count > 0)
             {
-                string p1hand = string.Join(",", p1deck.Item2);
-                string p2hand = string.Join(",", p2deck.Item2);
-                bool matchingRounds = hashRounds.Contains((p1hand, p2hand));
-                if (matchingRounds)
+                if (part2)
                 {
-                    Console.WriteLine($"Day 22 Part 2a: {CalcScore(p1deck.Item2)}");
-                    break;
-                    //return p1deck;
+                    (string, string) hands = (string.Join(",", p1Deck), string.Join(",", p2Deck));
+                    if (seenGames.Contains(hands))
+                    {
+                        return "p1";
+                    }
+                    seenGames.Add(hands);
                 }
-                else
-                    hashRounds.Add((p1hand,p2hand));
-                var p1Card = p1deck.Item2[0];
-                var p2Card = p2deck.Item2[0];
-                var p1Cnt = p1deck.Item2.Count() - 1;
-                var p2Cnt = p2deck.Item2.Count() - 1;
-                if (p1Card <= p1Cnt && p2Card <= p2Cnt)
+
+                var p1Card = p1Deck[0];
+                p1Deck.RemoveAt(0);
+                var p2Card = p2Deck[0];
+                p2Deck.RemoveAt(0);
+                string winner;
+                if (p1Card <= p1Deck.Count() && p2Card <= p2Deck.Count() && part2)
                 {
-                    (string, List<int>) p1 = new(p1deck.Item1, p1deck.Item2.GetRange(1, p1Card));
-                    (string, List<int>) p2 = new(p2deck.Item1, p2deck.Item2.GetRange(1, p2Card));
-                    var thisWinner = CheckForMatch(hashRounds, p1, p2);
-                    if(thisWinner.Item1 == "")
-                    {
-                        return ("", new(p1deck.Item2));
-                    }
-                    else if(thisWinner.Item1 == p1deck.Item1)
-                    {
-                        p1deck.Item2.Add(p1Card);
-                        p1deck.Item2.Add(p2Card);
-                    }
-                    else
-                    {
-                        p2deck.Item2.Add(p2Card);
-                        p2deck.Item2.Add(p1Card);
-                    }
+                    List<int> p1 = new(p1Deck.GetRange(0, p1Card));
+                    List<int> p2 = new(p2Deck.GetRange(0, p2Card));
+                    winner = PlayGame(p1, p2, part2);
                 }
                 else if (p1Card > p2Card)
+                    winner = "p1";
+                else
+                    winner = "p2";
+
+                if (winner == "p1")
                 {
-                    p1deck.Item2.Add(p1Card);
-                    p1deck.Item2.Add(p2Card);
+                    p1Deck.Add(p1Card);
+                    p1Deck.Add(p2Card);
                 }
                 else
                 {
-                    p2deck.Item2.Add(p2Card);
-                    p2deck.Item2.Add(p1Card);
+                    p2Deck.Add(p2Card);
+                    p2Deck.Add(p1Card);
                 }
-                p1deck.Item2.RemoveAt(0);
-                p2deck.Item2.RemoveAt(0);
             }
-
-            var p1count = p1deck.Item2.Count();
-            var p2count = p2deck.Item2.Count();
-            if (p1deck.Item2.Count > 0 && p2deck.Item2.Count > 0)
-            {
-                if(p1count + p2count == 50)
-                    Console.WriteLine($"Day 22 Part 2b: {CalcScore(p1deck.Item2)}");
-                return ("", new(p1deck.Item2));
-            }
-            else if (p1deck.Item2.Count > 0 && p2deck.Item2.Count == 0)
-                return p1deck;
-            else
-                return p2deck;
+            if (p2Deck.Count == 0)
+                return "p1";
+            return "p2";
         }
     }
 }
