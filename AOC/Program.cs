@@ -45,13 +45,20 @@ namespace AOC
             //Console.WriteLine();
             //Day19.AOCDay19();
             //Console.WriteLine();
+            
             //Day20.AOCDay20();
+
             //Console.WriteLine();
             //Day21.AOCDay21();
             //Console.WriteLine();
-            Day22.AOCDay22();
+            //Day22.AOCDay22();
+            //Console.WriteLine();
+            
+            //Day23.AOCDay23();
+            
+            //Console.WriteLine();
+            Day24.AOCDay24();
             Console.WriteLine();
-
 
             Console.WriteLine("More days to come, keep going!!!");
         }

@@ -116,7 +116,7 @@ namespace AOC
             int sideCount = (int)Math.Sqrt(tileCount);
             int lineCount = tileInfoDict[topLeftTile][0].Length;
             int picLines = sideCount * lineCount - sideCount + 1;
-
+            var wholePic = new List<List<char>>();
 
 
             //Console.WriteLine($"Day 20 Part 2: {ways}");
