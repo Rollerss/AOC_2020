@@ -109,20 +109,19 @@ namespace AOC
             int cupCount = cups.Count;
             int nodeDesV = node.Value - 1;
 
-            DateTime start = DateTime.Now;
+            LinkedListNode<int> nodeOne = node.Next;
+            LinkedListNode<int> nodeTwo = nodeOne.Next;
+            LinkedListNode<int> nodeThree = nodeTwo.Next;
+            cups.Remove(nodeOne);
+            cups.Remove(nodeTwo);
+            cups.Remove(nodeThree);
+            int nodeOneV = nodeOne.Value;
+            int nodeTwoV = nodeTwo.Value;
+            int nodeThreeV = nodeThree.Value;
 
+            DateTime start = DateTime.Now;
             for (int i = 0; i < turns; i++)
             {
-                LinkedListNode<int> nodeOne = node.Next;
-                LinkedListNode<int> nodeTwo = nodeOne.Next;
-                LinkedListNode<int> nodeThree = nodeTwo.Next;
-                cups.Remove(nodeOne);
-                cups.Remove(nodeTwo);
-                cups.Remove(nodeThree);
-                int nodeOneV = nodeOne.Value;
-                int nodeTwoV = nodeTwo.Value;
-                int nodeThreeV = nodeThree.Value;
-
                 LinkedListNode<int> nodeDes = cups.First;
                 bool notFound = true;
                 do
@@ -148,9 +147,32 @@ namespace AOC
                 cups.AddAfter(nodeDes, nodeThree);
                 cups.AddAfter(nodeDes, nodeTwo);
                 cups.AddAfter(nodeDes, nodeOne);
+                LinkedListNode<int> nodeLast = cups.Last;
 
-                node = node.Next;
-                nodeDesV = node.Value;
+                if(node == nodeLast)
+                {
+                    node = cups.First;
+                    nodeDesV = node.Value - 1;
+                    nodeOne = node.Next;
+                    nodeTwo = nodeOne.Next;
+                    nodeThree = nodeTwo.Next;
+                    cups.Remove(nodeOne);
+                    cups.Remove(nodeTwo);
+                    cups.Remove(nodeThree);
+                    nodeOneV = nodeOne.Value;
+                    nodeTwoV = nodeTwo.Value;
+                    nodeThreeV = nodeThree.Value;
+                }
+                else
+                {
+                    node = node.Next;
+                    if (node == nodeLast)
+                    {
+
+                    }
+
+                }
+
                 if (1 == i % 100000)
                     Console.WriteLine(DateTime.Now - start);
 
